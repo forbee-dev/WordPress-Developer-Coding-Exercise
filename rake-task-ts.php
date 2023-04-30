@@ -34,7 +34,6 @@ function rake_task_ts_shortcode($atts) {
 
     //var_dump($reviews_data) ;
 
-
 // HTML for the Table    
     $html = '<table>';
         $html .= '<thead>';
@@ -47,9 +46,27 @@ function rake_task_ts_shortcode($atts) {
         $html .= '</thead>';
         $html .= '<tbody>';
         foreach ($reviews_data as $item) {
+
+            $rating = $item['info']['rating'];
+            $full_stars = floor($rating);
+            $half_stars = ceil($rating - $full_stars);
+            $empty_stars = 5 - $full_stars - $half_stars;
+            
+
             $html .= '<tr>';
                 $html .= '<td data-cell="casino"><a href="' . site_url() . '/' . $item['brand_id'] . '"><img src="' . $item['logo'] . '"/></a><p><a href="' . site_url() . '/' . $item['brand_id'] . '">Reviews</a></p></td>';
-                $html .= '<td data-cell="bonus"><p>' . $item['info']['rating'] . '</p><p>' . $item['info']['bonus'] . '</p></td>';
+                $html .= '<td data-cell="bonus"><p>';
+                for ($i = 0; $i < $full_stars; $i++) {
+                    $html .= '<img src="' . plugin_dir_url(__FILE__) . 'assets/full_rating_star_icon.png' . '" />';
+                }
+                for ($i = 0; $i < $half_stars; $i++) {
+                    $html .= '<img src="' . plugin_dir_url(__FILE__) . 'assets/rating_star_half_icon.png' . '" />';
+                }
+                for ($i = 0; $i < $empty_stars; $i++) {
+                    $html .= '<img src="' . plugin_dir_url(__FILE__) . 'assets/empty_rating_star_icon.png' . '" />';
+                }
+                 
+                $html .= '</p><p>' . $item['info']['bonus'] . '</p></td>';
                 $features = $item['info']['features'];
                 $html .= '<td data-cell="features">';
                     $html .= '<ul>';
