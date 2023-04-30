@@ -1,8 +1,7 @@
 <?php
 
 /*  Plugin Name: Rake Task TS
-    Plugin URI:
-    Description: Rake Task TS
+    Description: Rake Task Tiago Santos
     Version: 1.0
     Author: Tiago Santos
     Author URI: https://github.com/forbee-dev
@@ -25,14 +24,19 @@ function load_css() {
 add_action( 'wp_enqueue_scripts', 'load_css' );
 
 // Load API
-function rake_task_ts_shortcode($atts) {
+function rake_task_ts_shortcode() {
     $url = 'https://b9247f49-0f6a-4af7-a447-47dbb5bf059d.mock.pstmn.io/';
     $response = wp_remote_get($url);
     $body = wp_remote_retrieve_body($response);
     $data = json_decode($body, true);
     $reviews_data = $data['toplists']['575'];
 
-    //var_dump($reviews_data) ;
+// Sort by Position
+    usort($reviews_data, function($a, $b) {
+        return $a['position'] <=> $b['position'];
+    });
+
+    //var_dump($reviews_data);
 
 // HTML for the Table    
     $html = '<table>';
@@ -46,15 +50,13 @@ function rake_task_ts_shortcode($atts) {
         $html .= '</thead>';
         $html .= '<tbody>';
         foreach ($reviews_data as $item) {
-
-            $rating = $item['info']['rating'];
-            $full_stars = floor($rating);
-            $half_stars = ceil($rating - $full_stars);
-            $empty_stars = 5 - $full_stars - $half_stars;
-            
-
             $html .= '<tr>';
                 $html .= '<td data-cell="casino"><a href="' . site_url() . '/' . $item['brand_id'] . '"><img src="' . $item['logo'] . '"/></a><p><a href="' . site_url() . '/' . $item['brand_id'] . '">Reviews</a></p></td>';
+// Rating Stars
+                $rating = $item['info']['rating'];
+                $full_stars = floor($rating);
+                $half_stars = ceil($rating - $full_stars);
+                $empty_stars = 5 - $full_stars - $half_stars;
                 $html .= '<td data-cell="bonus"><p>';
                 for ($i = 0; $i < $full_stars; $i++) {
                     $html .= '<img src="' . plugin_dir_url(__FILE__) . 'assets/full_rating_star_icon.png' . '" />';
@@ -65,7 +67,7 @@ function rake_task_ts_shortcode($atts) {
                 for ($i = 0; $i < $empty_stars; $i++) {
                     $html .= '<img src="' . plugin_dir_url(__FILE__) . 'assets/empty_rating_star_icon.png' . '" />';
                 }
-                 
+// End of Rating Stars 
                 $html .= '</p><p>' . $item['info']['bonus'] . '</p></td>';
                 $features = $item['info']['features'];
                 $html .= '<td data-cell="features">';

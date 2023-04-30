@@ -62,7 +62,7 @@ button:hover {
     display: block;
   }
 
-  td::before {
+  td:first-child::before {
     width: 100%;
     content: attr(data-cell);
     float: left;
@@ -71,6 +71,21 @@ button:hover {
     background-color: #ffa533;
     border-bottom: 0.125rem solid #ddd;
     margin-bottom: 1rem;
+  }
+
+  td:not(:first-child)::before {
+    width: 100%;
+    content: attr(data-cell);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #eee;
+    margin-bottom: 1rem;
+  }
+}
+
+  td::before :nth-child(0) {
+    background-color: red;
   }
 
   th,
