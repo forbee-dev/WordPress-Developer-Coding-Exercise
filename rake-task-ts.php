@@ -17,21 +17,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_shortcode('rake_task_ts', 'rake_task_ts_shortcode');
 
 // Load CSS 
-function load_css() {
+function rake_task_ts_load_css() {
     wp_register_style('rake-style', plugin_dir_url(__FILE__) . 'css/rake-task.css');
     wp_enqueue_style('rake-style');
 }
-add_action( 'wp_enqueue_scripts', 'load_css' );
+add_action( 'wp_enqueue_scripts', 'rake_task_ts_load_css' );
 
 // Load API
 function rake_task_ts_shortcode() {
     $url = 'https://b9247f49-0f6a-4af7-a447-47dbb5bf059d.mock.pstmn.io/';
     $response = wp_remote_get($url);
+
+// $response Error Handling
+    if (is_wp_error($response)) {
+        return 'Error retrieving data. Please try again later.';
+    }
+
+    $response_code = wp_remote_retrieve_response_code($response);
+    if ($response_code !== 200) {
+        return 'Error retrieving data. HTTP response code: ' . $response_code;
+    }
+
     $body = wp_remote_retrieve_body($response);
     $data = json_decode($body, true);
+
+// $data Error Handling
+    if (is_null($data)) {
+        return 'Error decoding JSON data.';
+    }
+
+// Get Reviews Data filtered by "575" key
     $reviews_data = $data['toplists']['575'];
 
-// Sort by Position
+// Sort by "Position"
     usort($reviews_data, function($a, $b) {
         return $a['position'] <=> $b['position'];
     });
