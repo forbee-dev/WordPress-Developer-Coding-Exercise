@@ -82,11 +82,6 @@ button:hover {
     background-color: #eee;
     margin-bottom: 1rem;
   }
-}
-
-  td::before :nth-child(0) {
-    background-color: red;
-  }
 
   th,
   td {
