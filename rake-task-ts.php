@@ -10,9 +10,9 @@
 */     
 
 // Exit if accessed directly.
-/* if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit; 
-} */
+}
 
 // Add Shortcode
 add_shortcode('rake_task_ts', 'rake_task_ts_shortcode');
@@ -29,7 +29,10 @@ function rake_task_ts_shortcode($atts) {
     $url = 'https://b9247f49-0f6a-4af7-a447-47dbb5bf059d.mock.pstmn.io/';
     $response = wp_remote_get($url);
     $body = wp_remote_retrieve_body($response);
-    $data = json_decode($body);
+    $data = json_decode($body, true);
+    $reviews_data = $data['toplists']['575'];
+
+    //var_dump($reviews_data) ;
 
 
 // HTML for the Table    
@@ -43,18 +46,27 @@ function rake_task_ts_shortcode($atts) {
             $html .= '</tr>';
         $html .= '</thead>';
         $html .= '<tbody>';
+        foreach ($reviews_data as $item) {
             $html .= '<tr>';
-                $html .= '<td><p>LOGO</p><p>SITE_URL</p></td>';
-                $html .= '<td><p>RATING</p><p>BONUS</p></td>';
-                $html .= '<td>Features</td>';
-                $html .= '<td><p>play-url</p><p>Terms_and_conditions</p></td>';
+                $html .= '<td data-cell="casino"><a href="' . site_url() . '/' . $item['brand_id'] . '"><img src="' . $item['logo'] . '"/></a><p><a href="' . site_url() . '/' . $item['brand_id'] . '">Reviews</a></p></td>';
+                $html .= '<td data-cell="bonus"><p>' . $item['info']['rating'] . '</p><p>' . $item['info']['bonus'] . '</p></td>';
+                $features = $item['info']['features'];
+                $html .= '<td data-cell="features">';
+                    $html .= '<ul>';
+                    foreach ($features as $feature) {
+                        $html .= '<li>' . $feature . '</li>';
+                    }  
+                    $html .= '</ul>';
+                $html .= '</td>';
+                $html .= '<td data-cell="play"><button onclick="window.open(\'' . $item['play_url'] . '\')">Play Now</button><p>' . $item['terms_and_conditions'] . '</p></td>';
             $html .= '</tr>';
+        }
         $html .= '</tbody>';
     $html .= '</table>';
 
     return $html;
 
-}
+} 
 
 ?>
 

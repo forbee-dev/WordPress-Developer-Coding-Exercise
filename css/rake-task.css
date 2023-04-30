@@ -1,5 +1,5 @@
 table {
-  /*border-collapse: collapse;*/
+  border-collapse: collapse;
   width: 100%;
   margin: 1.25rem 0;
   font-size: 1rem;
@@ -8,8 +8,8 @@ table {
 th,
 td {
   text-align: center;
-  padding: 0.5em;
-  border-bottom: 0.125em solid #ddd;
+  padding: 0.5rem;
+  border-bottom: 0.125rem solid #ddd;
 }
 
 th {
@@ -17,31 +17,68 @@ th {
   width: 25%;
   background-color: #ffa533;
   font-weight: bold;
-  border-bottom: 0.125em solid #ddd;
+  text-transform: uppercase;
+  border-bottom: 0.125rem solid #ddd;
 }
 
 tr:hover {
   background-color: #f2f4f4;
 }
 
-@media (max-width: 767px) {
-  /* Small devices (phones) */
-  table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+ul {
+  text-align: left;
+  list-style-image: url("../assets/dot_circle_icon.png");
+}
+
+li {
+  padding: 0.5rem;
+}
+
+button {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border: 0.25rem solid #4caf50;
+  border-radius: 0.25rem;
+  transition-duration: 0.4s;
+}
+
+button:hover {
+  background-color: white; /* Green */
+  color: #4caf50;
+}
+
+@media screen and (max-width: 1024px) {
+  th {
+    display: none;
   }
+
+  td {
+    display: block;
+  }
+
+  td::before {
+    width: 100%;
+    content: attr(data-cell);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #ffa533;
+    border-bottom: 0.125rem solid #ddd;
+    margin-bottom: 1rem;
+  }
+
   th,
   td {
+    border-bottom: 0;
+  }
+
+  ul {
     display: inline-block;
-    width: auto;
-  }
-  th:first-child,
-  td:first-child {
-    margin-left: 0;
-  }
-  th:last-child,
-  td:last-child {
-    margin-right: 0;
   }
 }
