@@ -1,0 +1,47 @@
+table {
+  /*border-collapse: collapse;*/
+  width: 100%;
+  margin: 1.25rem 0;
+  font-size: 1rem;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 0.5em;
+  border-bottom: 0.125em solid #ddd;
+}
+
+th {
+  height: 4rem;
+  width: 25%;
+  background-color: #ffa533;
+  font-weight: bold;
+  border-bottom: 0.125em solid #ddd;
+}
+
+tr:hover {
+  background-color: #f2f4f4;
+}
+
+@media (max-width: 767px) {
+  /* Small devices (phones) */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  th,
+  td {
+    display: inline-block;
+    width: auto;
+  }
+  th:first-child,
+  td:first-child {
+    margin-left: 0;
+  }
+  th:last-child,
+  td:last-child {
+    margin-right: 0;
+  }
+}
