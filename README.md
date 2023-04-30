@@ -4,7 +4,7 @@ The goal of this exercise is for you to create a Wordpress plugin which will fet
 
 ## Tech Stack
 
-**Client:** PHP, CSS
+PHP, CSS
 
 
 ## 🚀 About Me
