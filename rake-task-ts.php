@@ -105,5 +105,4 @@ function rake_task_ts_shortcode() {
 
 } 
 
-?>
 
